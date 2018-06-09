@@ -24,18 +24,18 @@ function init(app){
         // req.session.ID = result;
         // res.send('{"data":true}');
     });
-    app.post('./sign/up',function(req,res){
+    app.post('/sign/up',function(req,res){
         var username = req.body.username;
         var password = req.body.password;
         sign.SignUp(username,password,function(result){
             if(result){
-                res.rederict('./signUpSuccess');
+                res.rederict('/signUpSuccess');
             }else{
-                res.rederict('./signUpfailed');
+                res.rederict('/signUpfailed');
             }
         });
     });
-    app.get('./sign/loginout',function(req,res){
+    app.get('/sign/loginout',function(req,res){
         sign.logout(req);
         res.rederict('/');
     });
