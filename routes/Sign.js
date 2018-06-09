@@ -4,16 +4,25 @@ function init(app){
     app.post('/sign/in',function(req,res){
         var username = req.body.username;
         var password = req.body.password;
-        sign.getidByUsernameAndPassword(username,password,function(result){
-            if(result.length > 0)
-                res.rederict('./signInSuccess');
-            else{
-                res.rederict('./signInfailed');
-            }
-        });
-        req.session.ID = result;
-        req.session.username = username;
-        req.session.password = password;
+
+        // callback version
+        sign.getidByUsernameAndPassword(username, password,
+            result => {
+                if (result.length > 0) {
+                    req.session.ID = result;
+                    res.send('{"data":true}');
+                }else{
+                    res.send('{"data":false}');
+                }
+            });
+
+        // async version
+        // let result = await sign.getidByUsernameAndPassword(username, password)
+
+        // if (!(result.length > 0)) res.send('{"data":false}');
+
+        // req.session.ID = result;
+        // res.send('{"data":true}');
     });
     app.post('./sign/up',function(req,res){
         var username = req.body.username;
