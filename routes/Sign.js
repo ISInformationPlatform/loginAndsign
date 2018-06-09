@@ -24,14 +24,16 @@ function init(app){
         // req.session.ID = result;
         // res.send('{"data":true}');
     });
+    //callback version
     app.post('/sign/up',function(req,res){
         var username = req.body.username;
         var password = req.body.password;
-        sign.SignUp(username,password,function(result){
+        sign.SignUp(username,password,
+            result => {
             if(result){
-                res.rederict('/signUpSuccess');
+                res.send('{"data",true}');
             }else{
-                res.rederict('/signUpfailed');
+                res.send('{"data":false}');
             }
         });
     });
