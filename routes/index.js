@@ -6,9 +6,9 @@ function initRoutes(app){
   app.use(function(req,res,next){
     console.log('222');
     res.sendFile = function(file){
-        //res.setHeader('X-Accel-Redirect','/protected/' + file);
-        //res.setHeader('Cache-Control','no-store');
-       // res.setHeader('Cache-Control','max-age=3600');
+        res.setHeader('X-Accel-Redirect','/protected/' + file);
+        res.setHeader('Cache-Control','no-store');
+        res.setHeader('Cache-Control','max-age=3600');
         fs.readFile(file,function(err,data){
         if(err)
         {
