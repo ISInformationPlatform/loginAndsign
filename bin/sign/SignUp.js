@@ -1,52 +1,53 @@
 module.exports = SignUp;
+var url = "mongodb://localhost:27017/",
+    database = "ISInformationPlatform",
+    colleciton = "User";
+var mongo = require('kqudie')(url);
 
-function SignUp(username,password,callback){
-    if(!checkpassword()||!checkusername){
-        executeCallback();
-        return;
+/**
+ ** SignUp
+ ** 
+ **@param username
+ **@param password
+ */
+
+async function SignUp(username,password) {
+    let insert_json = {
+        username,
+        password
     }
-    insertUsername = new Promise((resovle,reject)=>{
-        //插入语句
-        resovle();
-    })
-    insertpassword = new Promise((resovle,reject)=>{
-        //插入语句
-        resovle();
-    });
-    
-    Promise.all([
-        insertUsername,
-        insertpassword
-    ]).then(executeCallback)
-      .catch(err => console.log(err));
+    if(!checkpassword()||!checkusername()) return false;
+    try{
+        return await mongo.insert(database,colleciton,insert_json);
+    }catch(error){
+        throw(error);
+    }
+}
+SignUp.then(()=>{return true});
+
+function checkpassword(){
+    let regexpForpassword = new RegExp(/[^a-zA-Z0-9]/);
+    let isPasswordLeagal = (password !=''&& regexpForpassword.test(password) != true);
+    if(isPasswordLeagal){
+           //console.log('password is leagal');
+           return true;  
+    }else{
+           //console.log('username is not leagal');
+           return false;
+    }
+   }
 
 
-    function checkusername(){
-        let regexpForUsername = new RegExp(/[^a-zA-Z0-9\u4e00-\u9fa5]/);
-        let isUsernameLeagal = ( username != '' && regexpForUsername.test(username) != true);
-    
-        if(isUsernameLeagal){
-            //console.log('username is leagal');
-            return true;
-        }else{
-            //console.log('username is not leagal');
-            return false;
-        }
-    }
-    function checkpassword(){
-     let regexpForpassword = new RegExp(/[^a-zA-Z0-9]/);
-     let isPasswordLeagal = (password !=''&& regexpForpassword.test(password) != true);
-     if(isPasswordLeagal){
-            //console.log('password is leagal');
-            return true;  
-     }else{
-            //console.log('username is not leagal');
-            return false;
-     }
-    }
-    function executeCallback(arg)
-    {
-        if(arg != undefined)
-        callback(arg);
+
+   function checkusername(){
+    let regexpForUsername = new RegExp(/[^a-zA-Z0-9\u4e00-\u9fa5]/);
+    let isUsernameLeagal = ( username != '' && regexpForUsername.test(username) != true);
+
+    if(isUsernameLeagal){
+        //console.log('username is leagal');
+        return true;
+    }else{
+        //console.log('username is not leagal');
+        return false;
     }
 }
