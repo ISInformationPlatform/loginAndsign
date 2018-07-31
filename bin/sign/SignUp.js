@@ -13,17 +13,17 @@ var mongo = require('kqudie')(url);
 
 async function SignUp(username,password) {
     let insert_json = {
-        username,
-        password
+        username:username,
+        password:password
     }
     if(!checkpassword()||!checkusername()) return false;
     try{
-        return await mongo.insert(database,colleciton,insert_json);
+        await mongo.insert(database,colleciton,insert_json);
+        return true;
     }catch(error){
         throw(error);
     }
 }
-SignUp.then(()=>{return true});
 
 function checkpassword(){
     let regexpForpassword = new RegExp(/[^a-zA-Z0-9]/);
