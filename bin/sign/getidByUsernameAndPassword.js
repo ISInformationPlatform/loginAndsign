@@ -1,7 +1,7 @@
 module.exports = getidByUsernameAndPassword;
 var url = "mongodb://localhost:27017/",
     database = "ISInformationPlatform",
-    colleciton = "User";
+    colleciton = "user";
 
 var mongo = require('kqudie')(url);
 
@@ -13,15 +13,17 @@ var mongo = require('kqudie')(url);
  ** @param password
  */
 
-async function getidByUsernameAndPassword(username,password){
+async function getidByUsernameAndPassword(username, password) {
     let options = {
-       username:username,
-       password:password
+        username: username,
+        password: password
     }
-    try{
-       let result = await mongo.find(database,colleciton,options);
-       return result[0]._id;
-    }catch(error){
+
+    try {
+        let result = await mongo.find(database, colleciton, options);
+
+        return result[0]._id;
+    } catch (error) {
         throw error;
     }
 }

@@ -1,7 +1,7 @@
 module.exports = SignUp;
 var url = "mongodb://localhost:27017/",
     database = "ISInformationPlatform",
-    colleciton = "User";
+    colleciton = "user";
 var mongo = require('kqudie')(url);
 
 /**
@@ -11,43 +11,39 @@ var mongo = require('kqudie')(url);
  **@param password
  */
 
-async function SignUp(username,password) {
-    let insert_json = {
-        username:username,
-        password:password
-    }
-    if(!checkpassword()||!checkusername()) return false;
-    try{
-        await mongo.insert(database,colleciton,insert_json);
+async function SignUp(username, password) {
+    if (!checkpassword(password) || !checkusername(username))
+        return false;
+
+    try {
+        await mongo.insert(database, colleciton, {
+            "username": username,
+            "password": password
+        });
         return true;
-    }catch(error){
-        throw(error);
+    } catch (error) {
+        throw (error);
     }
 }
 
-function checkpassword(){
+function checkpassword(password) {
     let regexpForpassword = new RegExp(/[^a-zA-Z0-9]/);
-    let isPasswordLeagal = (password !=''&& regexpForpassword.test(password) != true);
-    if(isPasswordLeagal){
-           //console.log('password is leagal');
-           return true;  
-    }else{
-           //console.log('username is not leagal');
-           return false;
-    }
-   }
+    let isPasswordLeagal = (password != '' && regexpForpassword.test(password) != true);
 
-
-
-   function checkusername(){
-    let regexpForUsername = new RegExp(/[^a-zA-Z0-9\u4e00-\u9fa5]/);
-    let isUsernameLeagal = ( username != '' && regexpForUsername.test(username) != true);
-
-    if(isUsernameLeagal){
-        //console.log('username is leagal');
+    if (isPasswordLeagal) {
         return true;
-    }else{
-        //console.log('username is not leagal');
+    } else {
+        return false;
+    }
+}
+
+function checkusername(username) {
+    let regexpForUsername = new RegExp(/[^a-zA-Z0-9\u4e00-\u9fa5]/);
+    let isUsernameLeagal = (username != '' && regexpForUsername.test(username) != true);
+
+    if (isUsernameLeagal) {
+        return true;
+    } else {
         return false;
     }
 }
