@@ -5,7 +5,7 @@ module.exports = initRoutes;
 function initRoutes(app) {
   let router = express.Router();
 
-  const sign = require('../bin/sign');
+  const sign = require('../bin');
 
   router.post('/in', async function (req, res) {
     var username = req.body.username;

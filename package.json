@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node bin/server.js",
-    "test": "mocha -t 10000 --exit"
+    "start": "node route/index.js",
+    "test": "mocha -t 5000 --exit"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
