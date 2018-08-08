@@ -1,14 +1,15 @@
 const expect = require('chai').expect;
 
-const url = "mongodb://www.lrworkshop.xin:27017/";
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
+const config = require('./config');
+const url = config.url;
 
 const mongo = require('kqudie')(url);
-const getidByUsernameAndPassword = require('../bin/getidByUsernameAndPassword');
+const admin = require('../bin')(config);
 
-const DATABASE = "ISInformationPlatform";
-const COLLECTION = "User";
+const DATABASE = config.database;
+const COLLECTION = config.colleciton;
 
 
 var obj_id = mongo.String2ObjectId('5b5746f4ffd5c52344ece77e'),
@@ -37,8 +38,7 @@ describe('getidByUsernameAndPassword', function () {
 
     it('test', async function () {
         try {
-            let result = await getidByUsernameAndPassword(username, password);
-            console.log(result)
+            let result = await admin.getidByUsernameAndPassword(username, password);
             let expect_id = mongo.ObjectId2String(obj_id);
 
             expect(result.toString()).to.equal(obj_id.toString());

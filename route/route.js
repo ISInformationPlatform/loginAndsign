@@ -2,20 +2,21 @@ const express = require('express');
 
 module.exports = initRoutes;
 
+const config = require('./config.js');
+
 function initRoutes(app) {
   let router = express.Router();
 
-  const sign = require('../bin');
+  const admin = require('../bin')(config);
 
   router.post('/in', async function (req, res) {
     var username = req.body.username;
     var password = req.body.password;
 
-    let result = await sign.getidByUsernameAndPassword(username, password);
+    let result = await admin.getidByUsernameAndPassword(username, password);
 
     if (result) {
-      console.log(result)
-      // req.session.ID = result;
+      req.session.ID = result;
       res.send('{"data":true}');
     } else {
       res.send('{"data":false}');
@@ -26,7 +27,7 @@ function initRoutes(app) {
     var username = req.body.username;
     var password = req.body.password;
 
-    let result = await sign.SignUp(username, password);
+    let result = await admin.SignUp(username, password);
 
     if (result) {
       res.send('{"data",true}');
@@ -36,8 +37,7 @@ function initRoutes(app) {
   });
 
   router.get('/loginout', function (req, res) {
-    sign.logout(req);
+    admin.logout(req);
   });
-
   return router;
 }
