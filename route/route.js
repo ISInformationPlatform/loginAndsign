@@ -30,7 +30,7 @@ function initRoutes(app) {
     let result = await admin.SignUp(username, password);
 
     if (result) {
-      res.send('{"data",true}');
+      res.send('{"data":true}');
     } else {
       res.send('{"data":false}');
     }

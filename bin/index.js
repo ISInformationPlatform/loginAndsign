@@ -52,10 +52,11 @@ async function isDuplicate(username){
  */
 
 admin.SignUp = async function (username, password) {
-    if (checkpassword(password) || checkusername(username)|| await isDuplicate(username))
+    let isDup = await isDuplicate(username);
+
+    if (checkpassword(password) || checkusername(username)|| isDup)
         return false;
         
-
     try {
         await mongo.insert(database, colleciton, {
             "username": username,
