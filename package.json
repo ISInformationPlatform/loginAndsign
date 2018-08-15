@@ -12,6 +12,7 @@
     "express": "~4.16.0",
     "express-session": "^1.15.6",
     "http-errors": "~1.6.2",
+    "http-proxy": "^1.17.0",
     "jade": "~1.11.0",
     "kqudie": "git+https://github.com/brummp/kqudie.git",
     "mongodb": "^3.0.10",
