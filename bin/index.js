@@ -1,7 +1,7 @@
 "use strict";
 var url , database, colleciton,mongo;
 ;
-var admin = module.exports = function(config){
+var admin = module.exports = function (config) {
     url = config.url;
     database = config.database;
     colleciton = config.colleciton;
@@ -79,16 +79,23 @@ admin.isSignIn = function(req){
         return false;
 };
 
-admin.getidByUsernameAndPassword = async function (username, password){
-    let options = {
-        username: username,
-        password: password
+admin.getidByUsernameAndPassword = async function (username, password) {
+    if (typeof username != 'string')
+        throw new Error('username must be a string.');
+    if (typeof password != 'string')
+        throw new Error('password must be a string.');
+
+    let opt = {
+        find: {
+            username: username,
+            password: password
+        }
     }
 
     try {
-        let result = await mongo.find(database, colleciton, options);
+        let result = await mongo.find(database, colleciton, opt);
 
-        return result[0]['_id'];
+        return result[0];
     } catch (error) {
         throw error;
     }

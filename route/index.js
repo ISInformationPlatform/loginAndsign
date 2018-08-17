@@ -19,7 +19,7 @@ app.use(session({
 }));
 
 app.use(function (req, res,next) {
-    if(req.url.split(path.sep)[1] === 'sign'){
+    if (req.url.split('/')[1] === 'sign') {
         next();
         return;
     }
@@ -35,5 +35,5 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/sign', getRouter());
 
 const server = app.listen(8080, function () {
-    console.log('adm server start working!');
+    console.log('admin server start working!');
 });

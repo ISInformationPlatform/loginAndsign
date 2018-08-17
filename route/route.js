@@ -19,6 +19,7 @@ function initRoutes(app) {
       req.session.ID = result;
       res.send('{"data":true}');
     } else {
+      req.session.ID = null;
       res.send('{"data":false}');
     }
   });
