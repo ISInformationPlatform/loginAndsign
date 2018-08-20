@@ -2,7 +2,7 @@ const express = require('express');
 
 module.exports = initRoutes;
 
-const config = require('./config.js');
+const config = require('../config');
 
 function initRoutes(app) {
   let router = express.Router();

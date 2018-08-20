@@ -24,7 +24,7 @@ app.use(function (req, res,next) {
         return;
     }
 
-    proxy.web(req,res,{target:'http://localhost:8081'});
+    proxy.web(req,res,{target:'http://main:8081'});
 });
 
 const bodyParser = require('body-parser');//用于处理表单数据
