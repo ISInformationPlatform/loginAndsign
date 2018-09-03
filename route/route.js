@@ -1,10 +1,6 @@
 const express = require('express');
 
-module.exports = initRoutes;
-
-const config = require('../config');
-
-function initRoutes(app) {
+module.exports = function initRoutes(config) {
   let router = express.Router();
 
   const admin = require('../bin')(config);
@@ -40,5 +36,6 @@ function initRoutes(app) {
   router.get('/loginout', function (req, res) {
     admin.logout(req);
   });
+
   return router;
 }
