@@ -1,11 +1,17 @@
 {
-  "name": "loginandsign",
-  "version": "0.0.0",
-  "private": true,
+  "name": "admin",
+  "version": "0.0.1",
+  "description": "用于用户管理的模块",
+  "main": "index.js",
+  "apidoc": {
+    "title": "用户管理模块",
+    "url": "http://localhost"
+  },
   "scripts": {
-    "start": "node route/index.js",
+    "start": "node index.js",
     "test": "mocha -t 5000 --exit"
   },
+  "license": "MIT",
   "dependencies": {
     "commander": "^2.17.1",
     "cookie-parser": "~1.4.3",
@@ -21,6 +27,7 @@
     "session-file-store": "^1.2.0"
   },
   "devDependencies": {
+    "apidoc": "^0.17.6",
     "chai": "^4.1.2",
     "coveralls": "~3.0.2",
     "istanbul": "~0.4.5",

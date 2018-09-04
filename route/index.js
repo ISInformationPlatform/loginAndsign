@@ -1,54 +1,122 @@
-const commander = require('commander');
-const http = require('http');
-const path = require('path');
-const proxy = require('http-proxy').createProxyServer({});
-const session = require('express-session');
-const FileStore = require('session-file-store')(session);
+const express = require('express');
 
-var getRouter = require('./route.js');
-var app = require('express')();
+module.exports = function initRoutes(config) {
+  let router = express.Router();
 
-var config;
+  const admin = require('../bin')(config);
 
-commander
-    .version('0.1.0')
-    .option('-t --target', 'test')
-    .action(function (path) {
-        if (typeof path != 'string')
-            config = require('../config');
-        else
-            config = require(path);
-    })
-    .parse(process.argv);
+  /**
+   * @api {post} /in 用户登录
+   * @apiName signIn
+   * @apiGroup sign
+   *
+   * @apiParam {String} username 用户的账号.
+   * @apiParam {String} password 用户的密码.
+   *
+   * @apiSuccess {String} firstname Firstname of the User.
+   * @apiSuccess {String} lastname  Lastname of the User.
+   *
+   * @apiSuccessExample Success-Response:
+   *     HTTP/1.1 200 OK
+   *     {
+   *       "firstname": "John",
+   *       "lastname": "Doe"
+   *     }
+   *
+   * @apiError UserNotFound The id of the User was not found.
+   *
+   * @apiErrorExample Error-Response:
+   *     HTTP/1.1 404 Not Found
+   *     {
+   *       "error": "UserNotFound"
+   *     }
+   */
 
-const service_server = config.service_server;
+  router.post('/in', async function (req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
 
-app.use(session({
-    resave: false,
-    saveUninitialized: false,
-    store: new FileStore(),
-    secret: 'hehe',
-    cookie: {
-        maxAge: 3000000
+    let result = await admin.getidByUsernameAndPassword(username, password);
+
+    if (result) {
+      req.session.ID = result;
+      res.send('{"data":true}');
+    } else {
+      req.session.ID = null;
+      res.send('{"data":false}');
     }
-}));
+  });
 
-app.use(function (req, res, next) {
-    if (req.url.split('/')[1] === 'sign') {
-        next();
-        return;
+  /**
+   * @api {post} /up 用户注册
+   * @apiName signUp
+   * @apiGroup sign
+   *
+   * @apiParam {String} username 用户的账号.
+   * @apiParam {String} password 用户的密码.
+   *
+   * @apiSuccess {String} firstname Firstname of the User.
+   * @apiSuccess {String} lastname  Lastname of the User.
+   *
+   * @apiSuccessExample Success-Response:
+   *     HTTP/1.1 200 OK
+   *     {
+   *       "firstname": "John",
+   *       "lastname": "Doe"
+   *     }
+   *
+   * @apiError UserNotFound The id of the User was not found.
+   *
+   * @apiErrorExample Error-Response:
+   *     HTTP/1.1 404 Not Found
+   *     {
+   *       "error": "UserNotFound"
+   *     }
+   */
+
+  router.post('/up', async function (req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
+
+    let result = await admin.SignUp(username, password);
+
+    if (result) {
+      res.send('{"data":true}');
+    } else {
+      res.send('{"data":false}');
     }
+  });
 
-    proxy.web(req, res, { target: service_server });
-});
+  /**
+   * @api {post} /logout 注销
+   * @apiName logout
+   * @apiGroup sign
+   *
+   * @apiParam {String} username 用户的账号.
+   * @apiParam {String} password 用户的密码.
+   *
+   * @apiSuccess {String} firstname Firstname of the User.
+   * @apiSuccess {String} lastname  Lastname of the User.
+   *
+   * @apiSuccessExample Success-Response:
+   *     HTTP/1.1 200 OK
+   *     {
+   *       "firstname": "John",
+   *       "lastname": "Doe"
+   *     }
+   *
+   * @apiError UserNotFound The id of the User was not found.
+   *
+   * @apiErrorExample Error-Response:
+   *     HTTP/1.1 404 Not Found
+   *     {
+   *       "error": "UserNotFound"
+   *     }
+   */
 
-const bodyParser = require('body-parser');//用于处理表单数据
+  router.get('/loginout', function (req, res) {
+    admin.logout(req);
+  });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use('/sign', getRouter(config));
-
-const server = app.listen(8080, function () {
-    console.log('admin server start working!');
-});
+  return router;
+}
