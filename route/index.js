@@ -78,12 +78,16 @@ module.exports = function initRoutes(config) {
     var username = req.body.username;
     var password = req.body.password;
 
-    let result = await admin.SignUp(username, password);
-
-    if (result) {
-      res.send('{"data":true}');
-    } else {
+    let isDup = admin.isDuplicate(username);
+    if(isDup){
       res.send('{"data":false}');
+    }else{
+      result = admin.SignUp(username,password);
+        if (result) {
+          res.send('{"data":true}');
+      } else {
+          res.send('{"data":false}');
+      }
     }
   });
 
