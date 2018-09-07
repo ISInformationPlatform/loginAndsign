@@ -15,9 +15,8 @@ var admin = module.exports = function (config) {
      */
 
     admin.SignUp = async function (username, password) {
-        let isDup = await isDuplicate(username);
 
-        if (checkpassword(password) || checkusername(username) || isDup)
+        if (checkpassword(password) || checkusername(username) )
             return false;
 
         try {
@@ -74,6 +73,14 @@ var admin = module.exports = function (config) {
     return admin;
 }
 
+    admin.isDuplicate = function(username){
+        let isDup = await isDuplicate(username);
+        if(isDup)
+            return true;
+        else
+            return false;
+    };
+
 function checkpassword(password) {
     let regexpForpassword = new RegExp(/[^a-zA-Z0-9]/);
     let isPasswordLeagal = (password == '' || regexpForpassword.test(password) == true);
@@ -95,6 +102,7 @@ function checkusername(username) {
         return false;
     }
 }
+
 
 async function isDuplicate(username) {
     var findObj = {
