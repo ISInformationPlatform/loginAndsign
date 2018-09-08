@@ -8,10 +8,24 @@ var admin = module.exports = function (config) {
     mongo = require('kqudie')(url);
 
     /**
-     ** SignUp
-     ** 
-     **@param username
-     **@param password
+     * @apiName SignUp
+     * @apiGroup sign
+     * 
+     * @apiParam {string} username 用户的账号
+     * @apiParam {string} password 用户的密码
+     * @apiParamExample
+     * {
+     *      "data":{
+     *          "username":"admin"
+     *          "password":"123"
+     *      }
+     * }
+     * 
+     * @apiSuccess {String} firstname Firstname of the User.
+     * @apiSuccess {String} lastname  Lastname of the User.
+     * 
+     * @apiError ParamInvalid the username or the password is invalid
+     * @apiError ParamExsited the username or the password is exsited
      */
 
     admin.SignUp = async function (username, password) {
@@ -30,16 +44,47 @@ var admin = module.exports = function (config) {
         }
     };
 
+    /**
+     * @apiName logout 
+     * @apiGroup sign
+     * 
+     * @apiParam {Object} req
+     */   
     admin.logout = function (req) {
         req.session.ID = undefined;
     };
 
+    /** 
+     *  @apiName isSignIn
+     *  @apiGroup sign
+     * 
+     *  @apiParam {Object} req
+     * 
+     */
     admin.isSignIn = function (req) {
         if (req.session.ID != null)
             return true;
         else
             return false;
     };
+    /**
+     * @apiName getidByUsernameAndPassword
+     * @apiGroup sign
+     * 
+     * @apiParam username 
+     * @apiParam password
+     * @apiParamExample 
+     * {
+     *      "data":{
+     *          "username":"admin"
+     *          "password":"123"
+     *      }
+     * }
+     * 
+     * @apiSuccess {string} id
+     * @apiError ParamInvalid the username or the password is invalid
+     * @apiError User NotFound the username  is not found
+     */
 
     admin.getidByUsernameAndPassword = async function (username, password) {
         if (typeof username != 'string')
@@ -63,6 +108,16 @@ var admin = module.exports = function (config) {
         }
     };
 
+    /**
+     * 
+     * @apiName getidBySession
+     * @apiGroup sign
+     * 
+     * @apiParam {Object} req
+     * 
+     * @apiSuccess {Object} id
+     * @apiError Not found the id is not found
+     */
     admin.getidBySession = function (req) {
         if (req.session.ID != undefined)
             return req.session.ID;
@@ -73,6 +128,15 @@ var admin = module.exports = function (config) {
     return admin;
 }
 
+    /**
+     * 
+     * @apiName isDuplicate
+     * @apiGroup sign
+     * 
+     * @apiParam {string} username
+     * 
+     * @apiError Duplicate the username is dpulicate
+     */
     admin.isDuplicate = function(username){
         let isDup = await isDuplicate(username);
         if(isDup)
