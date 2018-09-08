@@ -40,10 +40,20 @@ module.exports = function initRoutes(config) {
 
     if (result) {
       req.session.ID = result;
-      res.send('{"data":true}');
+      senddata={
+        "code":"100",
+        "message":"OK",
+        "data":"true"
+      }
+      res.status(200).jsonp(senddata);
     } else {
       req.session.ID = null;
-      res.send('{"data":false}');
+      senddata={
+        "code":"101",
+        "message":"username_or_password_err",
+        "data":"false"
+      }
+      res.status(404).jsonp(senddata)
     }
   });
 
@@ -80,13 +90,28 @@ module.exports = function initRoutes(config) {
 
     let isDup = admin.isDuplicate(username);
     if(isDup){
-      res.send('{"data":false}');
+      senddata={
+        "code":"103",
+        "message":"username_duplicated",
+        "data":"false"
+      }
+      res.status(404).jsonp(senddata);
     }else{
       result = admin.SignUp(username,password);
         if (result) {
-          res.send('{"data":true}');
+          senddata={
+            "code":"100",
+            "message":"OK",
+            "data":"true"
+          }
+          res.status(200).jsonp(senddata);
       } else {
-          res.send('{"data":false}');
+          senddata={
+            "code":"102",
+            "message":"username_or_password_invalid",
+            "data":"false"  
+          }
+          res.status(404).jsonp(senddata);
       }
     }
   });
