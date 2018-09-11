@@ -145,6 +145,118 @@ var admin = module.exports = function (config) {
             return false;
     };
 
+    /**
+     * 
+     * @apiName getDirectionByid
+     * @apiGroup
+     * 
+     * @apiParam {string}id
+     * 
+     * @apiSuccess Direction
+     * @apiError Not found direction
+     */
+    admin.getDirectionByid = async function(id){
+        let objId = mongo.String2ObjectId(id);
+
+        let opt = {
+            find:{
+                id:objId
+            }
+        }
+
+        try{
+            let result = await mongo.find(database, collection, opt);
+            return result[0];
+        }catch(err){
+            throw(err);
+        }
+    };
+
+    /**
+     * 
+     * @apiName getGradeByid
+     * @apiGroup
+     * 
+     * @apiParam {string} id
+     * 
+     * @apiSuccess Grade
+     * @apiError Not found Grade
+     */
+
+     admin.getGradeByid=async function(id){
+        let objId = mongo.String2ObjectId(id);
+
+        let opt={
+            find:{
+                id:objId
+            }
+        }
+
+        try{
+            let result = await mongo.find(database, collection, opt);
+            return result[0];
+        }catch(err){
+            throw(err);
+        }
+     };
+
+
+    /**
+     * 
+     * @apiName getIntroductionByid 
+     * @apiGroup
+     * 
+     * @apiParam {string} id
+     * 
+     * @apiSuccess Introduction
+     * @apiError Not found Introduction
+     */
+     admin.getIntroductionByid = async function(id){
+        let objId = mongo.String2ObjectId(id);
+
+        let opt = {
+            find:{
+                id:objId
+            }
+        }
+
+        try{
+            let result = await mongo.find(database, collection, opt);
+            return result[0];
+        }catch(err){
+            throw(err);
+        }
+     };
+
+
+     /**
+      * 
+      * @apiName getContactwayByid
+      * @apiGroup
+      * 
+      * @apiParam {string} id
+      * 
+      * @apiSuccess Contactway
+      * @apiError Not found contactway
+      */
+     admin.getContactwayByid = async function(id){
+        let objId = mongo.String2ObjectId(id);
+
+        let opt = {
+            find:{
+                id:objId
+            }
+        }
+
+        try{
+            let result = await mongo.find(database, collection, opt);
+            return result[0];
+        }catch(err){
+            throw(err);
+        }
+     }; 
+
+
 function checkpassword(password) {
     let regexpForpassword = new RegExp(/[^a-zA-Z0-9]/);
     let isPasswordLeagal = (password == '' || regexpForpassword.test(password) == true);
