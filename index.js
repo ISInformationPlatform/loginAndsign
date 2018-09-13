@@ -5,8 +5,9 @@ const proxy = require('http-proxy').createProxyServer({});
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 
-var getRouter = require('./route.js');
-var app = require('express')();
+var getSignRouter = require('./route/sign.js');
+var getUserRouter = require('./route/user.js');
+;var app = require('express')();
 
 var config;
 
@@ -15,7 +16,7 @@ commander
     .option('-t --target', 'test')
     .action(function (path) {
         if (typeof path != 'string')
-            config = require('./config');
+            config = require('./test/config');
         else
             config = require(path);
     })
@@ -34,7 +35,7 @@ app.use(session({
 }));
 
 app.use(function (req, res, next) {
-    if (req.url.split('/')[1] === 'sign') {
+    if (req.url.split('/')[1] === 'sign'||req.url.split('/'[1] === 'user')) {
         next();
         return;
     }
@@ -47,7 +48,8 @@ const bodyParser = require('body-parser');//用于处理表单数据
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/sign', getRouter(config));
+app.use('/sign', getSignRouter(config));
+app.use('/user', getUserRouter(config));
 
 const server = app.listen(8080, function () {
     console.log('admin server start working!');

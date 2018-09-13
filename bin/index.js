@@ -138,7 +138,7 @@ var admin = module.exports = function (config) {
      * @apiError Duplicate the username is dpulicate
      */
     admin.isDuplicate = function(username){
-        let isDup = await isDuplicate(username);
+        let isDup = isDuplicate(username);
         if(isDup)
             return true;
         else
@@ -147,115 +147,65 @@ var admin = module.exports = function (config) {
 
     /**
      * 
-     * @apiName getDirectionByid
-     * @apiGroup
-     * 
-     * @apiParam {string}id
-     * 
-     * @apiSuccess Direction
-     * @apiError Not found direction
-     */
-    admin.getDirectionByid = async function(id){
-        let objId = mongo.String2ObjectId(id);
-
-        let opt = {
-            find:{
-                id:objId
-            }
-        }
-
-        try{
-            let result = await mongo.find(database, collection, opt);
-            return result[0];
-        }catch(err){
-            throw(err);
-        }
-    };
-
-    /**
-     * 
-     * @apiName getGradeByid
-     * @apiGroup
+     * @apiName getPersonalInfoByid
+     * @apiGroup user
      * 
      * @apiParam {string} id
      * 
-     * @apiSuccess Grade
-     * @apiError Not found Grade
+     * @apiSuccess CareerDevelopment,Introdunction,Contactway,Grade
+     * @apiError Information not found
      */
+    admin.getPersonalInfoByid = async function(id){
+    let objId = mongo.String2ObjectId(id);
 
-     admin.getGradeByid=async function(id){
-        let objId = mongo.String2ObjectId(id);
-
-        let opt={
-            find:{
-                id:objId
-            }
+    let opt = {
+        find:{
+            _id:objId
         }
+    }
 
-        try{
-            let result = await mongo.find(database, collection, opt);
-            return result[0];
-        }catch(err){
-            throw(err);
-        }
-     };
+    try{
+        let result = await mongo.find(database, collection, opt);
 
+        return result[0];
+    }catch(err){
+        throw(err);
+    }
+ }; 
 
     /**
-     * 
-     * @apiName getIntroductionByid 
-     * @apiGroup
+     * @apiName addPersonalInfo
+     * @apiGroup user
      * 
      * @apiParam {string} id
+     * @apiParam {string} careerdevelopment
+     * @apiParam {string} grade
+     * @apiParam {string} contactway
+     * @apiParam {string} introduction
      * 
-     * @apiSuccess Introduction
-     * @apiError Not found Introduction
+     * @apiSuccess
+     * @apiError
      */
-     admin.getIntroductionByid = async function(id){
+    admin.addPersonalInfo = async function(id,careerdevelopment,grade,contactway,introduction){
         let objId = mongo.String2ObjectId(id);
 
-        let opt = {
-            find:{
-                id:objId
-            }
+        let query_json = {
+            '_id':objId
         }
-
+        
+        let insert_json = {
+            'career_development':careerdevelopment,
+            'grade':grade,
+            'contact_way':contactway,
+            'introduction':introduction
+        }
+        
         try{
-            let result = await mongo.find(database, collection, opt);
-            return result[0];
+            await mongo.update(database,collection,query_json,insert_json);
         }catch(err){
             throw(err);
         }
-     };
-
-
-     /**
-      * 
-      * @apiName getContactwayByid
-      * @apiGroup
-      * 
-      * @apiParam {string} id
-      * 
-      * @apiSuccess Contactway
-      * @apiError Not found contactway
-      */
-     admin.getContactwayByid = async function(id){
-        let objId = mongo.String2ObjectId(id);
-
-        let opt = {
-            find:{
-                id:objId
-            }
-        }
-
-        try{
-            let result = await mongo.find(database, collection, opt);
-            return result[0];
-        }catch(err){
-            throw(err);
-        }
-     }; 
-
+    }
 
 function checkpassword(password) {
     let regexpForpassword = new RegExp(/[^a-zA-Z0-9]/);

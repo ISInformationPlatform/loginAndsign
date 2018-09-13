@@ -72,7 +72,7 @@
       ]
     },
     "version": "0.0.0",
-    "filename": "route/index.js",
+    "filename": "route/sign.js",
     "groupTitle": "sign"
   },
   {
@@ -148,7 +148,7 @@
       ]
     },
     "version": "0.0.0",
-    "filename": "route/index.js",
+    "filename": "route/sign.js",
     "groupTitle": "sign"
   },
   {
@@ -224,7 +224,160 @@
       ]
     },
     "version": "0.0.0",
-    "filename": "route/index.js",
+    "filename": "route/sign.js",
     "groupTitle": "sign"
+  },
+  {
+    "type": "post",
+    "url": "/up",
+    "title": "用户注册",
+    "name": "addPersonalInfo",
+    "group": "user",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "career_development",
+            "description": "<p>就业去向</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "grade",
+            "description": "<p>年级</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "contact_way",
+            "description": "<p>联系方式</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "introduction",
+            "description": "<p>个人简介</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n   HTTP/1.1 200 ok\n   \"career_development\":\"go abroad\",\n   \"grade\":\"fresh\",\n   \"contact_way\":\"12345678\",\n   \"introduction\":\"a student\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UserNotFound",
+            "description": "<p>The id of the User was not found.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "\nHTTP/1.1 404 Not Found\n{\n  \"error\": \"Information NotFound\"\n}     *",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "route/user.js",
+    "groupTitle": "user"
+  },
+  {
+    "type": "get",
+    "url": "/:id",
+    "title": "获取用户信息",
+    "name": "getPersonalInfoByid",
+    "group": "user",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "id",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "career_development",
+            "description": "<p>就业去向</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "grade",
+            "description": "<p>年级</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "contact_way",
+            "description": "<p>联系方式</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "introduction",
+            "description": "<p>个人简介</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-response",
+          "content": "\nhttp/1.1 200 ok\n{\n   \"career_development\":\"go abroad\",\n   \"grade\":\"fresh\",\n   \"contact_way\":\"12345678\",\n   \"introduction\":\"a student\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "imformation",
+            "description": "<p>not found</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not Found\n{\n  \"error\": \"Information NotFound\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "route/user.js",
+    "groupTitle": "user"
   }
 ]
