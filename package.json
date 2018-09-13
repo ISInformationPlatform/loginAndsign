@@ -5,6 +5,8 @@
   "main": "index.js",
   "apidoc": {
     "title": "用户管理模块",
+    "version":"0.0.1",
+    "descirption":"the apidoc of admin",
     "url": "http://localhost"
   },
   "scripts": {
