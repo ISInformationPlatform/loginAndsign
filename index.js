@@ -35,7 +35,7 @@ app.use(session({
 }));
 
 app.use(function (req, res, next) {
-    if (req.url.split('/')[1] === 'sign'||req.url.split('/'[1] === 'user')) {
+    if (req.url.split('/')[1] === 'sign' || req.url.split('/')[1] === 'user') {
         next();
         return;
     }
@@ -51,6 +51,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/sign', getSignRouter(config));
 app.use('/user', getUserRouter(config));
 
-const server = app.listen(8080, function () {
+const server = app.listen(8081, function () {
     console.log('admin server start working!');
 });
