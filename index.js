@@ -51,6 +51,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/sign', getSignRouter(config));
 app.use('/user', getUserRouter(config));
 
-const server = app.listen(8081, function () {
+const server = app.listen(8080, function () {
     console.log('admin server start working!');
 });
