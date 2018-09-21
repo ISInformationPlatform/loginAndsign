@@ -138,8 +138,19 @@ module.exports = function initRoutes(config) {
    *     }
    */
 
-  router.get('/loginout', function (req, res) {
+  router.get('/out', function (req, res) {
     admin.logout(req);
+  });
+
+  router.get('/status', function (req, res) {
+    var status = !!req.session.ID;
+
+    var data = {
+      "message": "ok",
+      "data": status
+    }
+
+    res.status(200).jsonp(data);
   });
 
   return router;

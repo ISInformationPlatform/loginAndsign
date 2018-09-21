@@ -98,13 +98,6 @@ module.exports = function initRoutes(config){
       *     {
       *       "error": "Information NotFound"
       *     }     * 
-      * 
-      * 
-      * 
-      * 
-      * 
-      * 
-      *
       */
       router.post('/:id', async function(req, res){
         let id = req.params.id;
