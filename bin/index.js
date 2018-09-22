@@ -44,16 +44,6 @@ var admin = module.exports = function (config) {
         }
     };
 
-    /**
-     * @apiName logout 
-     * @apiGroup sign
-     * 
-     * @apiParam {Object} req
-     */   
-    admin.logout = function (req) {
-        req.session.ID = undefined;
-    };
-
     /** 
      *  @apiName isSignIn
      *  @apiGroup sign

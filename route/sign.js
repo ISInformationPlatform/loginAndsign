@@ -38,21 +38,23 @@ module.exports = function initRoutes(config) {
 
     let result = await admin.getidByUsernameAndPassword(username, password);
 
-    if (result) {
-      req.session.ID = result;
-      senddata={
-        "message":"OK",
-        "data":"true"
+    req.session.User = null;
+
+    if (!result)
+      return res.status(401).jsonp({ "message": "账户或密码错误" });
+
+    req.session.User = {
+      id: result._id,
+      username: result.username
+    };
+
+    res.status(200).jsonp({
+      'message': 'ok',
+      'data': {
+        'id': result._id,
+        'username': result.username
       }
-      res.status(200).jsonp(senddata);
-    } else {
-      req.session.ID = null;
-      senddata={
-        "message":"username_or_password_err",
-        "data":"false"
-      }
-      res.status(404).jsonp(senddata)
-    }
+    });
   });
 
   /**
@@ -139,18 +141,21 @@ module.exports = function initRoutes(config) {
    */
 
   router.get('/out', function (req, res) {
-    admin.logout(req);
+    req.session.User = null;
+
+    res.status(200).jsonp({
+      "message": "ok"
+    });
   });
 
   router.get('/status', function (req, res) {
-    var status = !!req.session.ID;
+    if (!req.session.User)
+      return res.status(401).jsonp({ "message": "未登录" });
 
-    var data = {
+    res.status(200).jsonp({
       "message": "ok",
-      "data": status
-    }
-
-    res.status(200).jsonp(data);
+      "data": req.session.User
+    });
   });
 
   return router;
