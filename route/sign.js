@@ -88,28 +88,24 @@ module.exports = function initRoutes(config) {
     var username = req.body.username;
     var password = req.body.password;
 
-    let isDup = admin.isDuplicate(username);
-    if(isDup){
-      senddata={
-        "message":"username_duplicated",
-        "data":"false"
-      }
-      res.status(404).jsonp(senddata);
-    }else{
-      result = admin.SignUp(username,password);
-        if (result) {
-          senddata={
-            "message":"OK",
-            "data":"true"
-          }
-          res.status(200).jsonp(senddata);
-      } else {
-          senddata={
-            "message":"username_or_password_invalid",
-            "data":"false"  
-          }
-          res.status(404).jsonp(senddata);
-      }
+    let isDup = await admin.isDuplicate(username);
+
+    if (isDup)
+      return res.status(422).jsonp({
+        message: '用户名重复',
+      });
+
+    if (!username || !password)
+      return res.status(422).jsonp({
+        message: '账户或密码不合法',
+      });
+
+    let result = await admin.SignUp(username, password);
+
+    if (result) {
+      res.status(200).jsonp({
+        "message": "OK",
+      });
     }
   });
 

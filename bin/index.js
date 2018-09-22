@@ -127,8 +127,8 @@ var admin = module.exports = function (config) {
      * 
      * @apiError Duplicate the username is dpulicate
      */
-    admin.isDuplicate = function(username){
-        let isDup = isDuplicate(username);
+    admin.isDuplicate = async function(username){
+        let isDup = await isDuplicate(username);
         if(isDup)
             return true;
         else
