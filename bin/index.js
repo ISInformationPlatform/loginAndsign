@@ -1,6 +1,6 @@
 "use strict";
 var url, database, collection, mongo;
-;
+
 var admin = module.exports = function (config) {
     url = config.URL;
     database = config.DATABASE;
@@ -30,7 +30,7 @@ var admin = module.exports = function (config) {
 
     admin.SignUp = async function (username, password) {
 
-        if (checkpassword(password) || checkusername(username) )
+        if (checkpassword(password) || checkusername(username))
             return false;
 
         try {
@@ -118,84 +118,91 @@ var admin = module.exports = function (config) {
     return admin;
 }
 
-    /**
-     * 
-     * @apiName isDuplicate
-     * @apiGroup sign
-     * 
-     * @apiParam {string} username
-     * 
-     * @apiError Duplicate the username is dpulicate
-     */
-    admin.isDuplicate = async function(username){
-        let isDup = await isDuplicate(username);
-        if(isDup)
-            return true;
-        else
-            return false;
-    };
+/**
+ * 
+ * @apiName isDuplicate
+ * @apiGroup sign
+ * 
+ * @apiParam {string} username
+ * 
+ * @apiError Duplicate the username is dpulicate
+ */
+admin.isDuplicate = async function (username) {
+    let isDup = await isDuplicate(username);
+    if (isDup)
+        return true;
+    else
+        return false;
+};
 
-    /**
-     * 
-     * @apiName getPersonalInfoByid
-     * @apiGroup user
-     * 
-     * @apiParam {string} id
-     * 
-     * @apiSuccess CareerDevelopment,Introdunction,Contactway,Grade
-     * @apiError Information not found
-     */
-    admin.getPersonalInfoByid = async function(id){
+/**
+ * 
+ * @apiName getPersonalInfoByid
+ * @apiGroup user
+ * 
+ * @apiParam {string} id
+ *
+ * @apiSuccess CareerDevelopment,Introdunction,Contactway,Grade
+ * @apiError Information not found
+ */
+admin.getPersonDetail = async function (id) {
     let objId = mongo.String2ObjectId(id);
 
     let opt = {
-        find:{
-            _id:objId
+        find: {
+            _id: objId
         }
     }
 
-    try{
+    try {
         let result = await mongo.find(database, collection, opt);
 
         return result[0];
-    }catch(err){
-        throw(err);
+    } catch (err) {
+        throw (err);
     }
- }; 
+};
 
-    /**
-     * @apiName addPersonalInfo
-     * @apiGroup user
-     * 
-     * @apiParam {string} id
-     * @apiParam {string} careerdevelopment
-     * @apiParam {string} grade
-     * @apiParam {string} contactway
-     * @apiParam {string} introduction
-     * 
-     * @apiSuccess
-     * @apiError
-     */
-    admin.addPersonalInfo = async function(id,careerdevelopment,grade,contactway,introduction){
-        let objId = mongo.String2ObjectId(id);
+/**
+ * @apiName addPersonalInfo
+ * @apiGroup user
+ * 
+ * @apiParam {string} id
+ * @apiParam {string} careerdevelopment
+ * @apiParam {string} grade
+ * @apiParam {string} contactway
+ * @apiParam {string} introduction
+ * 
+ * @apiSuccess
+ * @apiError
+ */
+admin.updatePersonDetail = async function (id, opt = {}) {
+    let objId = mongo.String2ObjectId(id);
 
-        let query_json = {
-            '_id':objId
-        }
-        
-        let insert_json = {
-            'career_development':careerdevelopment,
-            'grade':grade,
-            'contact_way':contactway,
-            'introduction':introduction
-        }
-        
-        try{
-            await mongo.update(database,collection,query_json,insert_json);
-        }catch(err){
-            throw(err);
+    let employment = opt.employment || null;
+    let grade = opt.grade || null;
+    let tel = opt.tel || null;
+    let introduction = opt.introduction || null;
+
+    let query_json = {
+        '_id': objId
+    }
+
+    let insert_json = {
+        $set: {
+            'employment': employment,
+            'grade': grade,
+            'tel': tel,
+            'introduction': introduction
         }
     }
+
+    try {
+        await mongo.update(database, collection, query_json, insert_json);
+    } catch (err) {
+        throw (err);
+    }
+}
 
 function checkpassword(password) {
     let regexpForpassword = new RegExp(/[^a-zA-Z0-9]/);
@@ -218,7 +225,6 @@ function checkusername(username) {
         return false;
     }
 }
-
 
 async function isDuplicate(username) {
     var findObj = {
