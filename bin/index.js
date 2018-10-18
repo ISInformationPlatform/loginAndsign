@@ -6,6 +6,8 @@ var admin = module.exports = function (config) {
     database = config.DATABASE;
     collection = config.user.collection;
     mongo = require('kqudie')(url);
+
+    return admin;
 }
 
 /**

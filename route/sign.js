@@ -4,6 +4,7 @@ var admin;
 
 module.exports = function initRoutes(config) {
   admin = require('../bin')(config);
+
   return router;
 }
 
