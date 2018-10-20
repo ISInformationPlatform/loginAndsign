@@ -51,14 +51,16 @@ router.post('/in', async function (req, res) {
 
   req.session.User = {
     id: result._id,
-    username: result.username
+    username: result.username,
+    nickname: result.nickname
   };
 
   res.status(200).jsonp({
     'message': 'ok',
     'data': {
       'id': result._id,
-      'username': result.username
+      'username': result.username,
+      'nickname': result.nickname
     }
   });
 });
@@ -96,12 +98,13 @@ router.post('/up', async function (req, res) {
 
   var username = req.body.username;
   var password = req.body.password;
+  var nickname = req.body.nickname;
 
   let isDup = await admin.isDuplicate(username);
 
   if (isDup)
     return res.status(422).jsonp({
-      message: '用户名重复',
+      message: '学号已激活',
     });
 
   if (!username || !password)
@@ -109,7 +112,7 @@ router.post('/up', async function (req, res) {
       message: '账户或密码不合法',
     });
 
-  let result = await admin.addUser(username, password);
+  let result = await admin.addUser(username, password, nickname);
 
   if (result) {
     res.status(200).jsonp({

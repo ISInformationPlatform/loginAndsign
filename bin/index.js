@@ -31,7 +31,7 @@ var admin = module.exports = function (config) {
  * @apiError ParamExsited the username or the password is exsited
  */
 
-admin.addUser = async function (username, password) {
+admin.addUser = async function (username, password, nickname) {
 
     if (checkpassword(password) || checkusername(username))
         return false;
@@ -39,7 +39,8 @@ admin.addUser = async function (username, password) {
     try {
         await mongo.insert(database, collection, {
             "username": username,
-            "password": password
+            "password": password,
+            "nickname": nickname
         });
         return true;
     } catch (error) {

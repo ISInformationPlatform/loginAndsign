@@ -7,7 +7,7 @@ const FileStore = require('session-file-store')(session);
 
 var getSignRouter = require('./route/sign.js');
 var getUserRouter = require('./route/user.js');
-;var app = require('express')();
+var app = require('express')();
 
 var config;
 
@@ -35,9 +35,16 @@ app.use(session({
 }));
 
 app.use(function (req, res, next) {
+    var user = req.session.User;
+
     if (req.url.split('/')[1] === 'sign' || req.url.split('/')[1] === 'user') {
         next();
         return;
+    }
+
+    if (user) {
+        req.headers['user-id'] = user.id;
+        req.headers['user-nickname'] = user.nickname;
     }
 
     proxy.web(req, res, { target: service_server });
