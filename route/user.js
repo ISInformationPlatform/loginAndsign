@@ -56,8 +56,8 @@ router.get('/:id', async function (req, res) {
       }
     });
   } catch (err) {
-    throw (err);
     res.sendStatus(500);
+    throw (err);
   }
 
 });
@@ -81,8 +81,8 @@ router.post('/:id', async function (req, res) {
       "message": 'ok'
     });
   } catch (err) {
-    throw (err);
     res.sendStatus(500);
+    throw (err);
   }
 
 });

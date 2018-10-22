@@ -42,7 +42,12 @@ router.post('/in', async function (req, res) {
   var username = req.body.username;
   var password = req.body.password;
 
-  let result = await admin.getIdByUsernameAndPassword(username, password);
+  try {
+    let result = await admin.getIdByUsernameAndPassword(username, password);
+  } catch (err) {
+    res.status(500);
+    throw err;
+  }
 
   req.session.User = null;
 
@@ -114,11 +119,18 @@ router.post('/up', async function (req, res) {
 
   let result = await admin.addUser(username, password, nickname);
 
-  if (result) {
+  try{
+    if (!result)
+      return res.status(404);
+
     res.status(200).jsonp({
-      "message": "OK",
+      "message": "ok",
     });
+  } catch (err){
+    res.status(500);
+    throw err;
   }
+
 });
 
 /**
